@@ -1,4 +1,5 @@
 //      Focus
+#include "config.h"
 #define PANEL_FOCUS 0
 #define EDITOR_FOCUS 1
 #define COMMAND_FOCUS 2
@@ -15,7 +16,7 @@ using namespace std;
 int main() {
     // General variables
     bool exit_program = false;
-    unsigned short cols = 0, rows = 0;
+    unsigned short cols = 0, rows = 0, key = 0;
     unsigned char current_focus = 0;
 
     // Command line
@@ -30,13 +31,15 @@ int main() {
 
     // Setting up
     setup();
+    load_config();
 
+    // Program loop
     while (!exit_program) {
         getmaxyx(stdscr, rows, cols); // Get terminal size
-        draw_tui(cols, rows); // Draw TUI :v
+        draw_tui(cols, rows, key); // Draw TUI :v
         refresh(); // Refresh terminal
 
-        unsigned short key = getch(); // Get user input
+        key = getch(); // Get user input
 
         switch (current_focus) {
             case PANEL_FOCUS:

@@ -8,7 +8,7 @@
 #define COMMAND_COLORS 3
 
 void setup();
-void draw_tui(unsigned short &cols, unsigned short &rows);
+void draw_tui(unsigned short &cols, unsigned short &rows, unsigned short &key);
 void close();
 
 #endif

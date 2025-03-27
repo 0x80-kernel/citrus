@@ -6,7 +6,8 @@ void setup() {
     initscr(); // Init screen
     raw(); // Enable raw mode
     curs_set(FALSE); // Enable cursor
-    noecho();
+    noecho(); // No show user input
+    keypad(stdscr, true); // Enable keypad
 
     // Colors
     start_color();
@@ -17,7 +18,7 @@ void setup() {
     init_pair(COMMAND_COLORS, COLOR_WHITE, COLOR_GREEN);
 }
 
-void draw_tui(unsigned short &cols, unsigned short &rows) {
+void draw_tui(unsigned short &cols, unsigned short &rows, unsigned short &key) {
     for (unsigned short i = 0; i != rows - 2; i++) {
         attron(COLOR_PAIR(PANEL_COLORS));
         mvhline(i, 0, ' ', cols / 4);
@@ -33,6 +34,8 @@ void draw_tui(unsigned short &cols, unsigned short &rows) {
     attron(COLOR_PAIR(COMMAND_COLORS));
     mvhline(rows - 1, 0, ' ', cols);
     attroff(COLOR_PAIR(COMMAND_COLORS));
+
+    mvprintw(0, 0, "%hu|%s", key, keyname(key));
 }
 
 void close() {
