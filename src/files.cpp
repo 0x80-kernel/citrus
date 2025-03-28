@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iterator>
 #include <list>
+#include <map>
 #include <string>
 #include <tuple>
 
@@ -11,9 +12,11 @@ class File_Object {
         //      Attributes
         // File
         string file_name;
+        unsigned short total_lines;
         list<string> content_buffer;
+        list<tuple<unsigned short, string>> newest_changes, latest_changes;
+        map<unsigned short, string> changes;
         fstream file_content;
-        list<tuple<unsigned short, string>> changes;
 
         // Cursor
         unsigned short current_line;
@@ -25,7 +28,13 @@ class File_Object {
         void load_buffer();
 };
 
-void File_Object::save() {}
+void File_Object::save() {
+    file_content.seekp(0, ios::beg); // Set file pointer to 0
+    string line_content;
+
+    changes.clear(); // Clear changes list
+}
+
 void File_Object::save_as() {}
 void File_Object::load_buffer() {
     file_content.seekp(0, ios::beg); // Set file pointer to 0
@@ -52,8 +61,10 @@ void add_file(list<File_Object*> &file_list, string &file_path) {
             new_file->file_name = file_path;
         }
     }
-    // Opening file
+    // Opening and reading file
     new_file->file_content.open(file_path);
+    new_file->load_buffer();
+    new_file->total_lines = 0;
 
     // Setting cursor position
     new_file->curs_y = 0;
